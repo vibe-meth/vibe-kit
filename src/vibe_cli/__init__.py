@@ -317,13 +317,24 @@ class StepTracker:
 def get_key() -> str:
     """Get keyboard input (arrow keys, enter, escape)."""
     key = readchar.readchar()
-    if key == '\x1b':  # Escape sequence
+    
+    # Windows arrow keys (start with \xe0 / 224)
+    if key == '\xe0':
+        next_char = readchar.readchar()
+        if next_char == 'H': return 'up'
+        if next_char == 'P': return 'down'
+        return 'escape'
+    
+    # ANSI escape sequences (start with \x1b)
+    if key == '\x1b':
         next_char = readchar.readchar()
         if next_char == '[':
             direction = readchar.readchar()
             if direction == 'A': return 'up'
             if direction == 'B': return 'down'
         return 'escape'
+    
+    # Standard keys
     if key in ('\r', '\n'): return 'enter'
     if key == '\x1b': return 'escape'
     return key

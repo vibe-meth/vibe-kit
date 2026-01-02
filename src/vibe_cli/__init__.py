@@ -438,6 +438,172 @@ def ensure_executable_scripts(project_path: Path, tracker: StepTracker = None):
     for script_path in project_path.glob(".agents/scripts/bash/*.sh"):
         script_path.chmod(0o755)
 
+def download_template_from_github(
+    ai_assistant: str,
+    script_type: str,
+    download_dir: Path,
+    *,
+    verbose: bool = True,
+    show_progress: bool = True,
+    client: httpx.Client = None,
+    debug: bool = False,
+    github_token: str = None,
+) -> Tuple[Path, dict]:
+    """Download VibeCoder template package from GitHub releases.
+    
+    Args:
+        ai_assistant: Agent key (e.g., 'claude', 'cursor-agent')
+        script_type: Script type ('sh' or 'ps')
+        download_dir: Directory to download template to
+        verbose: Print status messages
+        show_progress: Show download progress bar
+        client: httpx.Client instance (optional)
+        debug: Enable debug output
+        github_token: GitHub token for API access
+        
+    Returns:
+        Tuple of (zip_file_path, metadata_dict)
+    """
+    repo_owner = "vibe-meth"
+    repo_name = "vibe-kit"
+    
+    if client is None:
+        client = httpx.Client(verify=ssl_context)
+    
+    if verbose:
+        console.print("[cyan]Fetching latest release information...[/cyan]")
+    
+    api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
+    
+    try:
+        response = client.get(
+            api_url,
+            timeout=30,
+            follow_redirects=True,
+            headers=_github_auth_headers(github_token),
+        )
+        status = response.status_code
+        if status != 200:
+            error_msg = _format_rate_limit_error(status, response.headers, api_url)
+            if debug:
+                error_msg += f"\n\n[dim]Response body (truncated 500):[/dim]\n{response.text[:500]}"
+            raise RuntimeError(error_msg)
+        try:
+            release_data = response.json()
+        except ValueError as je:
+            raise RuntimeError(f"Failed to parse release JSON: {je}\nRaw (truncated 400): {response.text[:400]}")
+    except Exception as e:
+        console.print(f"[red]Error fetching release information[/red]")
+        console.print(Panel(str(e), title="Fetch Error", border_style="red"))
+        raise typer.Exit(1)
+    
+    assets = release_data.get("assets", [])
+    pattern = f"vibekit-template-{ai_assistant}-{script_type}"
+    matching_assets = [
+        asset for asset in assets
+        if pattern in asset["name"] and asset["name"].endswith(".zip")
+    ]
+    
+    asset = matching_assets[0] if matching_assets else None
+    
+    if asset is None:
+        console.print(f"[red]No matching release asset found[/red] for [bold]{ai_assistant}[/bold] (expected pattern: [bold]{pattern}[/bold])")
+        asset_names = [a.get('name', '?') for a in assets]
+        console.print(Panel("\n".join(asset_names) or "(no assets)", title="Available Assets", border_style="yellow"))
+        raise typer.Exit(1)
+    
+    download_url = asset["browser_download_url"]
+    filename = asset["name"]
+    file_size = asset["size"]
+    
+    if verbose:
+        console.print(f"[cyan]Found template:[/cyan] {filename}")
+        console.print(f"[cyan]Size:[/cyan] {file_size:,} bytes")
+        console.print(f"[cyan]Release:[/cyan] {release_data['tag_name']}")
+    
+    zip_path = download_dir / filename
+    if verbose:
+        console.print(f"[cyan]Downloading template...[/cyan]")
+    
+    try:
+        with client.stream(
+            "GET",
+            download_url,
+            timeout=60,
+            follow_redirects=True,
+            headers=_github_auth_headers(github_token),
+        ) as response:
+            if response.status_code != 200:
+                error_msg = _format_rate_limit_error(response.status_code, response.headers, download_url)
+                if debug:
+                    error_msg += f"\n\n[dim]Response body (truncated 400):[/dim]\n{response.text[:400]}"
+                raise RuntimeError(error_msg)
+            
+            total_size = int(response.headers.get('content-length', 0))
+            with open(zip_path, 'wb') as f:
+                if total_size == 0:
+                    for chunk in response.iter_bytes(chunk_size=8192):
+                        f.write(chunk)
+                else:
+                    if show_progress:
+                        with Progress(
+                            SpinnerColumn(),
+                            TextColumn("[progress.description]{task.description}"),
+                            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+                            console=console,
+                        ) as progress:
+                            task = progress.add_task("Downloading...", total=total_size)
+                            downloaded = 0
+                            for chunk in response.iter_bytes(chunk_size=8192):
+                                f.write(chunk)
+                                downloaded += len(chunk)
+                                progress.update(task, completed=downloaded)
+                    else:
+                        for chunk in response.iter_bytes(chunk_size=8192):
+                            f.write(chunk)
+    except Exception as e:
+        console.print(f"[red]Error downloading template[/red]")
+        detail = str(e)
+        if zip_path.exists():
+            zip_path.unlink()
+        console.print(Panel(detail, title="Download Error", border_style="red"))
+        raise typer.Exit(1)
+    
+    if verbose:
+        console.print(f"Downloaded: {filename}")
+    
+    metadata = {
+        "filename": filename,
+        "size": file_size,
+        "release": release_data["tag_name"],
+        "asset_url": download_url,
+    }
+    return zip_path, metadata
+
+def extract_template_zip(zip_path: Path, extract_to: Path, verbose: bool = True) -> bool:
+    """Extract template zip to project directory.
+    
+    Args:
+        zip_path: Path to zip file
+        extract_to: Directory to extract to
+        verbose: Print status messages
+        
+    Returns:
+        True if successful
+    """
+    try:
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_to)
+        
+        if verbose:
+            console.print(f"[cyan]Extracted template to:[/cyan] {extract_to}")
+        
+        return True
+    except Exception as e:
+        console.print(f"[red]Error extracting template[/red]")
+        console.print(Panel(str(e), title="Extract Error", border_style="red"))
+        return False
+
 app = typer.Typer()
 
 @app.command()
@@ -503,19 +669,50 @@ def init(
     with Live(tracker.render(), console=console, refresh_per_second=8, transient=True) as live:
         try:
             tracker.start("download")
-            tracker.complete("download", "template ready")
+            live.update(tracker.render(), refresh=True)
             
-            tracker.start("structure")
-            project_path.mkdir(parents=True, exist_ok=True)
-            tracker.complete("structure", "created")
+            # Create temp directory for download
+            with tempfile.TemporaryDirectory() as temp_dir:
+                temp_path = Path(temp_dir)
+                
+                # Download template from GitHub
+                # Note: download function prints its own progress to console
+                zip_path, metadata = download_template_from_github(
+                    selected_ai,
+                    selected_script,
+                    temp_path,
+                    verbose=verbose,
+                    show_progress=True,
+                    debug=debug,
+                    github_token=github_token,
+                )
+                
+                tracker.complete("download", f"template ready ({metadata['release']})")
+                live.update(tracker.render(), refresh=True)
+                
+                # Create project structure
+                tracker.start("structure")
+                live.update(tracker.render(), refresh=True)
+                project_path.mkdir(parents=True, exist_ok=True)
+                
+                # Extract template
+                if not extract_template_zip(zip_path, project_path, verbose=verbose):
+                    tracker.error("structure", "extraction failed")
+                    raise RuntimeError("Failed to extract template")
+                
+                tracker.complete("structure", "created and extracted")
+                live.update(tracker.render(), refresh=True)
             
             tracker.start("permissions")
+            live.update(tracker.render(), refresh=True)
             ensure_executable_scripts(project_path, tracker=tracker)
             tracker.complete("permissions", "set")
+            live.update(tracker.render(), refresh=True)
             
             should_init_git = check_tool("git")
             if not no_git and should_init_git:
                 tracker.start("git")
+                live.update(tracker.render(), refresh=True)
                 if is_git_repo(project_path):
                     tracker.complete("git", "existing repo")
                 else:
@@ -524,12 +721,16 @@ def init(
                         tracker.complete("git", "initialized")
                     else:
                         tracker.error("git", "init failed")
+                live.update(tracker.render(), refresh=True)
             elif no_git:
                 tracker.skip("git", "--no-git flag")
+                live.update(tracker.render(), refresh=True)
             else:
                 tracker.skip("git", "git not installed")
+                live.update(tracker.render(), refresh=True)
             
             tracker.complete("final", "project ready")
+            live.update(tracker.render(), refresh=True)
         except Exception as e:
             tracker.error("final", str(e))
             console.print(Panel(f"Initialization failed: {e}", title="Failure", border_style="red"))

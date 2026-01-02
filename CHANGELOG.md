@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.0] - Unreleased
+
+### Added
+- GitHub release download for agent-specific templates
+- `download_template_from_github()` function for fetching templates
+- `extract_template_zip()` function for extracting templates to project
+- Automatic template download during `vibe init`
+- Rate-limit aware GitHub API calls with error handling
+- Progress bar for template downloads
+
+### Changed
+- CLI now downloads templates from GitHub releases instead of using built-in files
+
 ## [0.1.0] - 2026-01-02
 
 ### Added

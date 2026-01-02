@@ -1,6 +1,4 @@
-name: Release
-permissions:
-  contents: write
+name: Create Release
 
 on:
   push:

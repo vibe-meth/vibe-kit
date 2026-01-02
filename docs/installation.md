@@ -13,7 +13,7 @@ Get VibeCoder installed and ready to use.
 Install VibeCoder globally so you can use it anywhere:
 
 ```bash
-uv tool install vibe-cli --from git+https://github.com/vibekit/vibe-kit.git
+uv tool install vibe-cli --from git+https://github.com/vibe-meth/vibe-kit.git
 ```
 
 Then use it directly:
@@ -29,7 +29,7 @@ vibe version
 To upgrade to the latest version:
 
 ```bash
-uv tool install vibe-cli --force --from git+https://github.com/vibekit/vibe-kit.git
+uv tool install vibe-cli --force --from git+https://github.com/vibe-meth/vibe-kit.git
 ```
 
 Or:
@@ -51,7 +51,7 @@ uv tool uninstall vibe-cli
 Run VibeCoder without installing (requires uv):
 
 ```bash
-uvx --from git+https://github.com/vibekit/vibe-kit.git vibe init my-project
+uvx --from git+https://github.com/vibe-meth/vibe-kit.git vibe init my-project
 ```
 
 ---
@@ -133,7 +133,7 @@ uv tool list
 If not shown, try installing again:
 
 ```bash
-uv tool install vibe-cli --from git+https://github.com/vibekit/vibe-kit.git
+uv tool install vibe-cli --from git+https://github.com/vibe-meth/vibe-kit.git
 ```
 
 ### "Python 3.11+ not found"

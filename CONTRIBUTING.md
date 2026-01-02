@@ -46,7 +46,7 @@ Want to add new functionality?
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/vibekit/vibe-kit.git
+git clone https://github.com/vibe-meth/vibe-kit.git
 cd vibe-kit
 ```
 

@@ -314,6 +314,95 @@ class StepTracker:
         """Attach a refresh callback (for Live updates)."""
         self.refresh_callback = callback
 
+def get_key() -> str:
+    """Get keyboard input (arrow keys, enter, escape)."""
+    key = readchar.readchar()
+    if key == '\x1b':  # Escape sequence
+        next_char = readchar.readchar()
+        if next_char == '[':
+            direction = readchar.readchar()
+            if direction == 'A': return 'up'
+            if direction == 'B': return 'down'
+        return 'escape'
+    if key in ('\r', '\n'): return 'enter'
+    if key == '\x1b': return 'escape'
+    return key
+
+def select_with_arrows(options: dict, prompt_text: str = "Select an option", default_key: str = None) -> str:
+    """
+    Interactive selection using arrow keys with Rich Live display.
+    
+    Args:
+        options: Dict with keys as option keys and values as descriptions
+        prompt_text: Text to show above the options
+        default_key: Default option key to start with
+        
+    Returns:
+        Selected option key
+    """
+    option_keys = list(options.keys())
+    if default_key and default_key in option_keys:
+        selected_index = option_keys.index(default_key)
+    else:
+        selected_index = 0
+
+    selected_key = None
+
+    def create_selection_panel():
+        """Create the selection panel with current selection highlighted."""
+        table = Table.grid(padding=(0, 2))
+        table.add_column(style="cyan", justify="left", width=3)
+        table.add_column(style="white", justify="left")
+
+        for i, key in enumerate(option_keys):
+            if i == selected_index:
+                table.add_row("▶", f"[cyan]{key}[/cyan] [dim]({options[key]})[/dim]")
+            else:
+                table.add_row(" ", f"[cyan]{key}[/cyan] [dim]({options[key]})[/dim]")
+
+        table.add_row("", "")
+        table.add_row("", "[dim]Use ↑/↓ to navigate, Enter to select, Esc to cancel[/dim]")
+
+        return Panel(
+            table,
+            title=f"[bold]{prompt_text}[/bold]",
+            border_style="cyan",
+            padding=(1, 2)
+        )
+
+    console.print()
+
+    def run_selection_loop():
+        nonlocal selected_key, selected_index
+        with Live(create_selection_panel(), console=console, transient=True, auto_refresh=False) as live:
+            while True:
+                try:
+                    key = get_key()
+                    if key == 'up':
+                        selected_index = (selected_index - 1) % len(option_keys)
+                    elif key == 'down':
+                        selected_index = (selected_index + 1) % len(option_keys)
+                    elif key == 'enter':
+                        selected_key = option_keys[selected_index]
+                        break
+                    elif key == 'escape':
+                        console.print("\n[yellow]Selection cancelled[/yellow]")
+                        raise typer.Exit(1)
+
+                    live.update(create_selection_panel(), refresh=True)
+
+                except KeyboardInterrupt:
+                    console.print("\n[yellow]Selection cancelled[/yellow]")
+                    raise typer.Exit(1)
+
+    run_selection_loop()
+
+    if selected_key is None:
+        console.print("\n[red]Selection failed.[/red]")
+        raise typer.Exit(1)
+
+    return selected_key
+
 def show_banner():
     """Display the VibeCoder banner."""
     console.print(BANNER)
@@ -355,6 +444,7 @@ app = typer.Typer()
 def init(
     project_name: Optional[str] = typer.Argument(None, help="Project name or directory"),
     ai: Optional[str] = typer.Option(None, "--ai", help="AI agent: claude, gemini, copilot, cursor-agent, q, amp, or other"),
+    script: Optional[str] = typer.Option(None, "--script", help="Script type: sh or ps"),
     here: bool = typer.Option(False, "--here", help="Initialize in current directory"),
     no_git: bool = typer.Option(False, "--no-git", help="Skip git initialization"),
     skip_tls: bool = typer.Option(False, "--skip-tls", help="Skip TLS verification"),
@@ -370,6 +460,35 @@ def init(
         raise typer.Exit(1)
     
     project_path = Path(".") if here else Path(project_name)
+    
+    # Validate and select AI agent
+    if ai:
+        if ai not in AGENT_CONFIG:
+            console.print(f"[red]Error:[/red] Invalid AI agent '{ai}'. Choose from: {', '.join(AGENT_CONFIG.keys())}")
+            raise typer.Exit(1)
+        selected_ai = ai
+    else:
+        # Interactive selection for AI agent
+        ai_choices = {key: config["name"] for key, config in AGENT_CONFIG.items()}
+        selected_ai = select_with_arrows(ai_choices, "Choose your AI assistant:", "claude")
+    
+    # Validate and select script type
+    if script:
+        if script not in SCRIPT_TYPE_CHOICES:
+            console.print(f"[red]Error:[/red] Invalid script type '{script}'. Choose from: {', '.join(SCRIPT_TYPE_CHOICES.keys())}")
+            raise typer.Exit(1)
+        selected_script = script
+    else:
+        # Interactive selection for script type with smart default
+        default_script = "ps" if os.name == "nt" else "sh"
+        
+        if sys.stdin.isatty():
+            selected_script = select_with_arrows(SCRIPT_TYPE_CHOICES, "Choose script type:", default_script)
+        else:
+            selected_script = default_script
+    
+    console.print(f"[cyan]Selected AI agent:[/cyan] {selected_ai}")
+    console.print(f"[cyan]Selected script type:[/cyan] {selected_script}")
     
     console.print(f"[cyan]Initializing VibeCoder project at {project_path}[/cyan]\n")
     

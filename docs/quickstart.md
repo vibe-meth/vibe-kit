@@ -11,16 +11,16 @@ Get started with VibeCoder in 5 minutes.
 
 ```bash
 # Create a new project
-uvx --from git+https://github.com/vibekit/vibe-kit.git vibe init <PROJECT_NAME>
+uvx --from git+https://github.com/vibe-meth/vibe-kit.git vibe init <PROJECT_NAME>
 
 # OR initialize in current directory
-uvx --from git+https://github.com/vibekit/vibe-kit.git vibe init .
+uvx --from git+https://github.com/vibe-meth/vibe-kit.git vibe init .
 ```
 
 Or install persistently:
 
 ```bash
-uv tool install vibe-cli --from git+https://github.com/vibekit/vibe-kit.git
+uv tool install vibe-cli --from git+https://github.com/vibe-meth/vibe-kit.git
 vibe init <PROJECT_NAME>
 ```
 

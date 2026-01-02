@@ -1,207 +1,329 @@
 <div align="center">
-    <img src="./media/logo_large.webp" alt="VibeCoder Logo" width="200" height="200"/>
+    <img src="./media/vibekit.png" alt="VibeCoder Logo" width="400" height="400"/>
     <h1>🎵 VibeCoder</h1>
-    <h3><em>Flow-first, intuition-driven development with AI as your co-pilot.</em></h3>
+    <h3>Ship faster with AI. No specs. No perfection. Just momentum.</h3>
 </div>
 
 <p align="center">
-    <strong>An open source toolkit for developers who code by feel. Plan in phases, track confidence honestly, execute fast, and let AI handle the bookkeeping.</strong>
+    <strong>For developers who use AI to code faster. Plan in phases, track confidence, ship with confidence.</strong>
 </p>
 
 <p align="center">
-    <a href="https://github.com/actions/workflows/release.yml"><img src="https://github.com/actions/workflows/release.yml/badge.svg" alt="Release"/></a>
-    <a href="https://github.com/stargazers"><img src="https://img.shields.io/github/stars?style=social" alt="GitHub stars"/></a>
-    <a href="https://github.com/blob/main/LICENSE"><img src="https://img.shields.io/github/license" alt="License"/></a>
+    <a href="https://github.com/vibe-meth/vibe-kit/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-9d4edd?style=for-the-badge" alt="MIT License"/></a>
+    <a href="https://github.com/vibe-meth/vibe-kit"><img src="https://img.shields.io/badge/python-3.11+-7209b7?style=for-the-badge" alt="Python 3.11+"/></a>
+    <a href="https://github.com/vibe-meth/vibe-kit"><img src="https://img.shields.io/badge/status-production%20ready-06a77d?style=for-the-badge" alt="Production Ready"/></a>
+    <a href="https://github.com/vibe-meth/vibe-kit"><img src="https://img.shields.io/badge/vibe-driven%20development-3c096c?style=for-the-badge" alt="Vibe-Driven Development"/></a>
+    <a href="https://github.com/vibe-meth/vibe-kit"><img src="https://img.shields.io/badge/19%2B-AI%20Agents-5a189a?style=for-the-badge" alt="19+ AI Agents"/></a>
+    <a href="https://github.com/vibe-meth/vibe-kit"><img src="https://img.shields.io/badge/contributions-welcome-f72585?style=for-the-badge" alt="Contributions Welcome"/></a>
 </p>
 
 ---
 
-## Table of Contents
+## Why VibeCoder?
 
-- [🎵 What is Vibe-Driven Development?](#-what-is-vibe-driven-development)
-- [🚀 Get Started](#-get-started)
-- [🤖 Supported AI Agents](#-supported-ai-agents)
-- [⚙️ VibeCoder CLI Reference](#️-vibecoder-cli-reference)
-- [📊 Core Workflow](#-core-workflow)
-- [✨ Features](#-features)
-- [📚 Learn More](#-learn-more)
-- [💬 Support](#-support)
-- [📄 License](#-license)
+You're using AI to code. That's smart. But without a workflow, it becomes:
 
-## 🎵 What is Vibe-Driven Development?
+- ❌ Endless back-and-forth with your AI
+- ❌ Lost context between conversations
+- ❌ Unclear what needs doing next
+- ❌ Shipping broken because you didn't validate
 
-Vibe-Driven Development (VDD) is a methodology that embraces intuition, tracks confidence honestly, and prioritizes flow over process. Instead of exhaustive specifications, we:
+**VibeCoder fixes this.** It gives you a 3-step workflow that keeps you and your AI in sync, tracks what actually works, and lets you ship when confidence is high.
 
-- **Plan in phases** — 3-5 major phases instead of 50 micro-tasks
-- **Score confidence** — Be honest: 8/10 confident is useful data; stop at 4/10
-- **Execute and track** — Mark tasks done, log blockers, spot trends in real-time
-- **Adjust freely** — Confidence drops? Pivot. Blocker? Fix it. No gates, no approval cycles.
-- **Let AI coordinate** — We focus on code; AI handles dependencies, bookkeeping, trends
+### The Problem VibeCoder Solves
 
-See [VIBE_MEMORY.md](./VIBE_MEMORY.md) for the full philosophy and methodology.
+**Without VibeCoder:**
+```
+Tell AI → Get code → Run it → Confused what to do next
+→ Tell AI again → Repeat → Lost 2 hours
+```
 
-## 🚀 Get Started
+**With VibeCoder:**
+```
+PLAN (3-5 phases) → TASKS (AI breaks it down) → EXECUTE (track confidence)
+→ Done, shipped, confident
+```
 
-### 1. Install VibeCoder CLI
+---
 
-#### Option 1: Persistent Installation (Recommended)
+## Who Uses VibeCoder?
 
+- **Solo developers** speeding up with Claude/Copilot
+- **Bootstrappers** shipping fast, not perfect
+- **Teams** moving quickly with shared confidence scores
+- **Anyone** who wants to code faster with AI, not slower
+
+---
+
+## How It Works (5 Minutes)
+
+### Step 1: Install
 ```bash
-uv tool install vibe-cli --from git+https://github.com/vibekit/vibe-kit.git
+uv tool install vibe-cli --from git+https://github.com/vibe-meth/vibe-kit.git
+vibe init my-project --ai claude
 ```
 
-Then use it directly:
+### Step 2: Plan (Tell Your AI What to Build)
+Open Claude/Copilot/Amp and use:
+```
+/vibekit.plan
 
+Build a user dashboard that shows:
+- Recent activity (last 7 days)
+- Performance metrics (charts)
+- Settings panel (dark mode, notifications)
+
+Tech: React, Node.js, PostgreSQL
+Timeline: 2 weeks
+```
+
+Your AI creates a **plan.md** with phases, assumptions, and confidence scores.
+
+### Step 3: Break Down (Get Task List)
+```
+/vibekit.tasks
+```
+
+Your AI maps out the work, dependencies, and execution order. Now you know exactly what's next.
+
+### Step 4: Execute (Track Confidence)
+```
+/vibekit.execute
+
+Task: Set up auth database
+Status: Done
+Confidence: 8/10 (OAuth works, but validation needed)
+Blockers: None
+```
+
+Track progress. When confidence drops (5/10 or lower), stop and clarify. Ship when confidence is high (8+).
+
+---
+
+## The Core Insight
+
+**You don't need perfect specs. You need honest confidence.**
+
+- **8-10 confidence** = Ship it. Iterate later if needed.
+- **5-7 confidence** = Validate before shipping. Something's unsure.
+- **1-4 confidence** = Stop. Clarify. Don't push forward confused.
+
+This is how real developers work. VibeCoder just makes it explicit.
+
+---
+
+## What You Get
+
+### 1. Workflow That Matches Your Brain
+- Plan in **phases**, not micro-tasks (3-5 things at a time)
+- AI stays in context (not new conversation every time)
+- Clear next steps (no "what do I do now?")
+
+### 2. Confidence-Based Shipping
+- Score every task honestly (1-10)
+- See trends (confidence 9 → 6? Something's wrong)
+- Ship with confidence, not hope
+
+### 3. AI That Actually Helps
+- AI monitors dependencies
+- AI suggests next moves
+- AI handles the bookkeeping (you code)
+
+### 4. Works With Your AI
+- Claude Code, Copilot, Cursor, Amp, Gemini, and 14+ others
+- Drop-in commands: `/vibekit.plan`, `/vibekit.tasks`, `/vibekit.execute`
+- Works in any editor
+
+### 5. Zero Overhead
+- No lengthy processes
+- No approval cycles
+- No specs (just phases)
+- Pivot when needed
+
+---
+
+## Real Workflow
+
+```
+Monday morning: /vibekit.plan → 15 minutes planning with Claude
+Tuesday: /vibekit.tasks → Claude breaks it into 12 tasks
+Wed-Thu: /vibekit.execute → You execute, mark done, score confidence
+Friday: Confidence trending down? /vibekit.clarify → Course correct
+Done by Friday. Shipped Monday.
+```
+
+Compare to traditional: Plan week 1, review week 2, code weeks 3-5, bugs week 6. Total: 6 weeks.
+
+---
+
+## Commands
+
+### Initialize Project
 ```bash
-# Create new project
-vibe init <PROJECT_NAME>
-
-# Or initialize in existing project
-vibe init . --ai claude
-vibe init --here --ai amp
-
-# Check installed tools
-vibe check
+vibe init my-project --ai claude
+vibe init . --ai copilot          # Use in current directory
 ```
 
-#### Option 2: One-time Usage
-
-```bash
-uvx --from git+https://github.com/vibekit/vibe-kit.git vibe init <PROJECT_NAME>
+### Core Workflow (Use These)
+```
+/vibekit.plan      Plan your phases (do this first)
+/vibekit.tasks     Break into tasks (AI does this)
+/vibekit.execute   Track progress (do this daily)
 ```
 
-### 2. Start Vibing
-
-Launch your AI assistant in the project directory. Use the `/vibekit.*` commands:
-
-```bash
-/vibekit.plan       # Create your vibe plan
-/vibekit.tasks      # Break down into actionable tasks
-/vibekit.execute    # Execute and track progress
-/vibekit.insight    # Get analysis and insights
-/vibekit.review     # Review confidence and blockers
+### Optional Guidance (Use When Stuck)
+```
+/vibekit.clarify   Stuck? Ask clarifying questions
+/vibekit.insight   Mid-phase? Analyze what's happening
+/vibekit.review    Done? Review what you learned
 ```
 
-## 🤖 Supported AI Agents
+---
 
-VibeCoder works with all major AI coding assistants:
+## Supported AI Agents
 
-| Agent | Type | Status |
-|-------|------|--------|
-| **Claude Code** | CLI | ✅ Full |
-| **GitHub Copilot** | IDE | ✅ Full |
-| **Cursor** | IDE | ✅ Full |
-| **Windsurf** | IDE | ✅ Full |
-| **Gemini CLI** | CLI | ✅ Full |
-| **Amazon Q Developer** | CLI | ✅ Full |
-| **Amp** | CLI | ✅ Full |
-| **Roo Code** | IDE | ✅ Full |
-| **Codex CLI** | CLI | ⚠️ Partial |
-| **Qwen Code** | CLI | ⚠️ Partial |
-| **opencode** | CLI | ⚠️ Partial |
-| **Auggie CLI** | CLI | ⚠️ Partial |
-| **CodeBuddy** | CLI | ⚠️ Partial |
-| **Qoder CLI** | CLI | ⚠️ Partial |
-| **SHAI** | CLI | ⚠️ Partial |
-| **Kilo Code** | IDE | ⚠️ Partial |
-| **IBM Bob** | IDE | ⚠️ Partial |
+Works with everything:
 
-## ⚙️ VibeCoder CLI Reference
+**CLI-based**: Claude Code • Gemini CLI • Amazon Q Developer • Amp • Codex CLI • Qwen Code • opencode • Auggie CLI • CodeBuddy • Qoder CLI • SHAI
 
-### `vibe init`
+**IDE-based**: GitHub Copilot (VS Code) • Cursor IDE • Windsurf • Roo Code • Kilo Code • IBM Bob
 
-Initialize a new VibeCoder project.
+Don't see yours? [Add it](./CONTRIBUTING.md) or [request it](https://github.com/vibe-meth/vibe-kit/issues).
 
-```bash
-vibe init <project-name>          # Create new project
-vibe init . --ai claude           # Use Claude in current dir
-vibe init --here --ai amp         # Use Amp in current dir
-```
+---
 
-**Options:**
-- `--ai` — Choose your AI agent
-- `--here` — Initialize in current directory
-- `--no-git` — Skip git initialization
-- `--skip-tls` — Skip TLS verification
-- `--debug` — Enable debug output
+## Key Features
 
-### `vibe check`
+- **Phase-based Planning** — Plan in chunks (3-5), not 50 micro-tasks
+- **Confidence Scoring** — Track confidence (1-10). Ship at 8+.
+- **Real-time Execution Tracking** — Mark done, log blockers, spot issues early
+- **Confidence Trending** — See patterns (9 → 6 = problem)
+- **AI Co-piloting** — Your AI handles dependencies, you code
+- **Multi-Agent Support** — Use any AI assistant
+- **Low Overhead** — Minutes to set up, seconds to use
+- **Dev Container Ready** — Full Docker setup with all agents pre-installed
+- **Cross-platform** — macOS, Linux, Windows (automatic Bash/PowerShell)
 
-Verify all required tools are installed.
+---
 
-```bash
-vibe check
-```
+## Confidence System
 
-### `vibe version`
-
-Display version and system information.
-
-```bash
-vibe version
-```
-
-## 📊 Core Workflow
+The heart of VibeCoder. Not hours, not story points. Just honest confidence.
 
 ```
-PLAN (Phases) → TASKS (Dependencies) → EXECUTE (Confidence) → Review & Pivot
+Task: Implement OAuth2 flow
+Confidence: 6/10
+Why: I know the pattern, but haven't used this library before
+Next: Research library docs, validate with AI
+
+Task: Set up PostgreSQL
+Confidence: 9/10
+Why: I've done this 20 times
+Next: Ship it
 ```
 
-### Core Commands (Sequential)
+When confidence drops mid-phase (8 → 5), something changed. Stop. Clarify. Don't push through confused.
 
-1. **`/vibekit.plan`** — Create phases with assumptions and confidence scores
-2. **`/vibekit.tasks`** — Break plan into actionable work with dependencies
-3. **`/vibekit.execute`** — Track progress, score confidence, log blockers
+---
 
-### Optional Advisory (Anytime)
+## FAQ
 
-- **`/vibekit.clarify`** — Ask questions to surface hidden assumptions (pre-execution)
-- **`/vibekit.insight`** — Analyze patterns, spot risks, suggest pivots (mid-phase)
-- **`/vibekit.review`** — Assess quality and plan improvements (post-phase)
+**Q: Is this for juniors or seniors?**  
+A: Both. Juniors use it to ship faster with AI. Seniors use it to manage uncertainty on new tech.
 
-## ✨ Core Features
+**Q: What if I don't have an AI agent yet?**  
+A: VibeCoder supports 19+ agents. Pick one: Claude is best for planning, Copilot is free, Cursor is best UX.
 
-- **Phase-based Planning** — Think in chunks (3-5 phases), not micro-tasks
-- **Honest Confidence Scoring** — 8/10 confident is progress; 4/10 is a signal to clarify
-- **Real-time Execution Tracking** — Mark tasks done, log decisions, spot blocker patterns
-- **Confidence Trending** — Confidence drops? You know you need to pivot early
-- **AI Co-piloting** — AI monitors dependencies, suggests next moves, keeps context
-- **Multi-Agent Support** — Works with 19+ AI coding assistants (Claude, Amp, Cursor, etc.)
-- **Low Overhead** — Minimal process; maximum flow
-- **Dev Container Ready** — Full devcontainer with all AI agent support pre-installed
+**Q: Do I have to use all 6 commands?**  
+A: No. The 3 core commands (plan, tasks, execute) are enough. The others (clarify, insight, review) are optional.
 
-## 📁 Directory Structure
+**Q: How is this different from just using AI?**  
+A: Without VibeCoder, you chat with AI. With VibeCoder, you have a workflow. AI stays in context. You don't repeat yourself.
+
+**Q: Can teams use this?**  
+A: Yes. Share plans, tasks, and confidence scores. CI/CD friendly. Works with git.
+
+**Q: How long does it take to learn?**  
+A: 5 minutes. Seriously. Three commands: plan, tasks, execute.
+
+**Q: Will this slow me down?**  
+A: No. Overhead is minimal. You spend 15 minutes planning, 5 minutes organizing, then just code. Less context switching than emailing specs.
+
+---
+
+## Getting Started
+
+1. **Install**: `uv tool install vibe-cli --from git+https://github.com/vibe-meth/vibe-kit.git`
+2. **Initialize**: `vibe init my-project --ai claude`
+3. **Plan**: Open Claude, type `/vibekit.plan`, describe what you're building
+4. **Ship**: Follow the tasks, track confidence, ship when confident
+
+[Full Tutorial](./docs/quickstart.md)
+
+---
+
+## Documentation
+
+- [Quick Start](./docs/quickstart.md) — 5-minute walkthrough
+- [Installation Guide](./docs/installation.md) — Get it running
+- [Full Methodology](./VIBE_MEMORY.md) — The philosophy behind VibeCoder
+- [VibeCoder vs Spec-Kit](./docs/vibe-vs-spec.md) — Should you use this or Spec-Kit?
+- [All Docs](./docs/index.md)
+
+---
+
+## Contributing
+
+VibeCoder is open source. Contribute:
+
+- [Report bugs](https://github.com/vibe-meth/vibe-kit/issues)
+- [Suggest features](https://github.com/vibe-meth/vibe-kit/issues)
+- [Submit code](./CONTRIBUTING.md)
+- [Join discussions](https://github.com/vibe-meth/vibe-kit/discussions)
+
+---
+
+## Community
+
+- [Issues & Feature Requests](https://github.com/vibe-meth/vibe-kit/issues)
+- [Discussions](https://github.com/vibe-meth/vibe-kit/discussions)
+- [Support](./SUPPORT.md)
+
+---
+
+## Project Structure
 
 ```
 vibe-kit/
-├── .agents/              # AI agent configuration & scripts
-├── .devcontainer/        # Development container setup
-├── docs/                 # Documentation
-├── memory/               # VibeCoder guidelines & context
-├── templates/            # Command templates & workflows
-├── scripts/              # Setup and utility scripts
-├── src/                  # VibeCoder CLI source
-└── media/                # Logos and images
+├── src/vibe_cli/           CLI implementation
+├── templates/              Command templates (plan, tasks, execute, etc.)
+├── scripts/                Setup and utility scripts
+├── docs/                   Documentation
+├── memory/                 VibeCoder guidelines
+├── .devcontainer/          Dev container (AI agents pre-installed)
+└── media/                  Logos and images
 ```
 
-## 📚 Learn More
+---
 
-- [Installation Guide](./docs/installation.md)
-- [Quick Start](./docs/quickstart.md)
-- [Local Development](./docs/local-development.md)
-- [Upgrade Guide](./docs/upgrade.md)
-- [VIBE Memory](./VIBE_MEMORY.md) — Core principles and context
+## License
 
-## 💬 Support
+MIT. Free to use, modify, distribute. See [LICENSE](./LICENSE).
 
-- [Documentation](./docs/)
-- [Report Issues](https://github.com/vibekit/vibe-kit/issues)
-- [Discussions](https://github.com/vibekit/vibe-kit/discussions)
+---
 
-## 📄 License
+## Code of Conduct
 
-VibeCoder is open source and available under the [MIT License](./LICENSE).
+Community is important. See [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
+
+---
+
+## Security
+
+Found a bug? Report it to security@vibekit.dev (not GitHub issues). [Policy](./SECURITY.md).
 
 ---
 
 **Made with vibes by developers, for developers.** 🎵
+
+For people who code with AI. For people who ship fast. For people who value momentum over perfection.

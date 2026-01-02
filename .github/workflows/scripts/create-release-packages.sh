@@ -40,8 +40,8 @@ generate_commands() {
     # Normalize line endings
     file_content=$(tr -d '\r' < "$template")
     
-    # Extract description from YAML frontmatter
-    description=$(printf '%s\n' "$file_content" | awk '/^description:/ {sub(/^description:[[:space:]]*/, ""); print; exit}')
+    # Extract description from YAML frontmatter and remove surrounding quotes
+    description=$(printf '%s\n' "$file_content" | awk '/^description:/ {sub(/^description:[[:space:]]*/, ""); print; exit}' | sed 's/^"//; s/"$//')
     
     # Extract script command from YAML frontmatter
     script_command=$(printf '%s\n' "$file_content" | awk -v sv="$script_variant" '/^[[:space:]]*'"$script_variant"':[[:space:]]*/ {sub(/^[[:space:]]*'"$script_variant"':[[:space:]]*/, ""); print; exit}')
@@ -85,9 +85,20 @@ generate_commands() {
     
     case $ext in
       toml)
-        body=$(printf '%s\n' "$body" | sed 's/\\/\\\\/g')
-        { echo "description = \"$description\""; echo; echo "prompt = \"\"\""; echo "$body"; echo "\"\"\""; } > "$output_dir/vibekit.$name.$ext" ;;
+        # For TOML output, put the entire template content (including YAML frontmatter) inside the prompt
+        # This matches the structure: description = "..." followed by prompt = """..."""
+        # with the complete template (frontmatter + content) inside the prompt
+        
+        # Escape backslashes and quotes for TOML string
+        escaped_body=$(printf '%s\n' "$body" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g')
+        
+        # Clean description by removing any remaining surrounding quotes
+        clean_description=$(printf '%s\n' "$description" | sed 's/^"//; s/"$//')
+        
+        # Generate TOML with the exact structure specified
+        { echo "description = \"$clean_description\""; echo; echo "prompt = \"\"\""; echo "$escaped_body"; echo "\"\"\""; } > "$output_dir/vibekit.$name.$ext" ;;
       md)
+        # For markdown, keep the same structure but ensure proper formatting
         echo "$body" > "$output_dir/vibekit.$name.$ext" ;;
     esac
   done

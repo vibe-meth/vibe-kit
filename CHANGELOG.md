@@ -11,14 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - GitHub release download for agent-specific templates
-- `download_template_from_github()` function for fetching templates
+- `download_template_from_github()` function for fetching templates from releases
 - `extract_template_zip()` function for extracting templates to project
 - Automatic template download during `vibe init`
 - Rate-limit aware GitHub API calls with error handling
 - Progress bar for template downloads
+- Agent-specific command files for all 18 supported agents
+- Per-agent command generation (Markdown for most agents, TOML for Gemini/Qwen)
+- Windows arrow key support for interactive selection
 
 ### Changed
-- CLI now downloads templates from GitHub releases instead of using built-in files
+- CLI now downloads agent-specific templates from GitHub releases
+- Release packages now include full command files per agent (not just base structure)
+- Windows keyboard input now properly handles arrow keys (up/down navigation)
 
 ## [0.1.0] - 2026-01-02
 

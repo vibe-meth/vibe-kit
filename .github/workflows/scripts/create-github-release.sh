@@ -40,14 +40,14 @@ RELEASE_NOTES+="Total: $package_count template packages (19 agents × 2 script t
 "
 
 # Add checksums
-for checksum_file in "$GENRELEASES_DIR"/*.sha256 2>/dev/null || []; do
+for checksum_file in "$GENRELEASES_DIR"/*.sha256; do
   if [[ -f "$checksum_file" ]]; then
     filename=$(basename "$checksum_file" .sha256)
     checksum=$(cat "$checksum_file")
     RELEASE_NOTES+="- **$filename**: \`$checksum\`
 "
   fi
-done
+done 2>/dev/null || true
 
 echo "Creating GitHub release $TAG"
 echo "Release notes:"
@@ -57,11 +57,11 @@ echo "$RELEASE_NOTES"
 if command -v gh &>/dev/null; then
   # Build asset flags
   assets_args=""
-  for package in "$GENRELEASES_DIR"/*.zip 2>/dev/null || []; do
+  for package in "$GENRELEASES_DIR"/*.zip; do
     if [[ -f "$package" ]]; then
       assets_args="$assets_args $package"
     fi
-  done
+  done 2>/dev/null || true
   
   gh release create "$TAG" \
     --title "VibeCoder Templates $TAG" \

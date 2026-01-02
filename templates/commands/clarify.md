@@ -1,5 +1,11 @@
 ---
 description: "Ask clarifying questions to surface assumptions and de-risk the plan [OPTIONAL PRE-EXECUTION]"
+scripts:
+  sh: scripts/bash/setup-vibe.sh --json
+  ps: scripts/powershell/setup-vibe.ps1 -Json
+agent_scripts:
+  sh: scripts/bash/update-agent-context.sh __AGENT__
+  ps: scripts/powershell/update-agent-context.ps1 -AgentType __AGENT__
 ---
 
 ## User Input

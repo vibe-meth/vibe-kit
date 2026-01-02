@@ -24,12 +24,12 @@ You're asking strategic questions to surface hidden assumptions and validate the
 
 Ask 3-5 critical questions:
 
-### [Question Category]
+### [Question Category 1]
 **[Specific question]**
 - Why this matters: [Impact if wrong]
 - Possible answers: [Option A], [Option B], or [Option C]
 
-### [Question Category]
+### [Question Category 2]
 **[Specific question]**
 - Why this matters: [Impact if wrong]
 - Possible answers: [Option A], [Option B]

@@ -26,6 +26,7 @@ Use this as a starting point for your `/vibekit.plan` command.
 - [ ] [Main work]
 
 ### Key Decisions
+
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | [What] | [Decision] | [Why] |

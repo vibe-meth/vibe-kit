@@ -1,6 +1,6 @@
 [project]
 name = "vibe-cli"
-version = "0.1.0"
+version = "0.1.1"
 description = "VibeCoder CLI - Flow-first AI development toolkit. Plan in phases, score confidence, execute fast."
 authors = [
     { name = "VibeCoder Team", email = "team@vibekit.dev" },

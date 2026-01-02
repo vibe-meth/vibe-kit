@@ -19,11 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Agent-specific command files for all 18 supported agents
 - Per-agent command generation (Markdown for most agents, TOML for Gemini/Qwen)
 - Windows arrow key support for interactive selection
+- Graceful handling of non-UTF-8 terminals (Windows cp1252 encoding)
 
 ### Changed
 - CLI now downloads agent-specific templates from GitHub releases
 - Release packages now include full command files per agent (not just base structure)
 - Windows keyboard input now properly handles arrow keys (up/down navigation)
+- Console output now gracefully handles limited terminal encodings without crashing
 
 ## [0.1.0] - 2026-01-02
 

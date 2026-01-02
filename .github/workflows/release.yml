@@ -30,8 +30,14 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v2
 
-      - name: Install build dependencies
-        run: uv pip install --system build
+      - name: Create release packages
+        run: |
+          chmod +x .github/workflows/scripts/create-release-packages.sh
+          .github/workflows/scripts/create-release-packages.sh "${{ github.ref_name }}"
 
-      - name: Build distribution
-        run: python -m build
+      - name: Create GitHub Release
+        run: |
+          chmod +x .github/workflows/scripts/create-github-release.sh
+          .github/workflows/scripts/create-github-release.sh "${{ github.ref_name }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

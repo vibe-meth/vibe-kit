@@ -208,6 +208,64 @@ Maintain record of:
 [Why this score]
 ```
 
+## Agent-Specific Guidance & Smart Workflow Integration
+
+### For Claude (Narrative Reasoning Agent)
+**Strengths**: Complex problem analysis, stakeholder communication, comprehensive planning
+**Best for**: Initial planning, risk assessment, stakeholder alignment
+**Workflow optimization**:
+- Take time to analyze thoroughly and consider multiple perspectives
+- Document comprehensively with detailed rationale
+- Use narrative reasoning to connect business goals with technical execution
+- Flag subtle dependencies and stakeholder dynamics
+
+### For Cursor (IDE Integration Agent)
+**Strengths**: Fast iteration, code quality focus, immediate technical feedback
+**Best for**: Technical validation, architecture decisions, implementation planning
+**Workflow optimization**:
+- Focus on executable details and code-level implications
+- Validate technical assumptions with concrete examples
+- Emphasize maintainability, testing, and code quality
+- Provide immediate technical feedback on feasibility
+
+### For Copilot (Code Generation Agent)
+**Strengths**: Rapid prototyping, pattern recognition, boilerplate generation
+**Best for**: Technical validation, generating examples, exploring alternatives
+**Workflow optimization**:
+- Generate concrete code examples to validate assumptions
+- Test technical approaches quickly with working prototypes
+- Provide multiple implementation options with pros/cons
+- Focus on practical, implementable solutions
+
+### For Gemini (Multi-modal Agent)
+**Strengths**: Broad knowledge synthesis, creative problem solving, comprehensive analysis
+**Best for**: Exploring edge cases, validating assumptions, synthesizing diverse perspectives
+**Workflow optimization**:
+- Consider multiple angles and challenge assumptions systematically
+- Provide comprehensive analysis of alternatives
+- Synthesize information from diverse sources
+- Identify non-obvious risks and opportunities
+
+### Smart Workflow Integration
+
+#### Automated Triggers
+- **Confidence monitoring**: Alert when confidence drops below 6/10
+- **Risk escalation**: Notify team when critical risks are identified
+- **Stakeholder alignment**: Flag when perspectives conflict
+- **Progress tracking**: Update confidence trends with early warnings
+
+#### Context Preservation
+- **Phase transitions**: Automatically carry forward validated assumptions
+- **Risk register**: Maintain ongoing risk assessment across phases
+- **Confidence evolution**: Track how certainty changes over time
+- **Decision audit trail**: Preserve rationale for major choices
+
+#### Intelligent Recommendations
+- **Next phase suggestions**: Based on current confidence and risk levels
+- **Clarification triggers**: Automatic suggestions when uncertainty is high
+- **Resource allocation**: Recommendations based on complexity analysis
+- **Timeline adjustments**: Dynamic planning based on progress patterns
+
 ## Key Rules
 
 - **Stay flexible** — Plans can and will change
@@ -215,3 +273,6 @@ Maintain record of:
 - **Be honest about confidence** — Don't fake certainty
 - **Think in phases** — Not individual tasks yet
 - **Focus on flow** — Will execution be smooth?
+- **Agent-aware** — Optimize approach for your AI assistant's strengths
+- **Risk-first** — Address high-impact uncertainties early
+- **Stakeholder-focused** — Ensure all voices are heard and aligned

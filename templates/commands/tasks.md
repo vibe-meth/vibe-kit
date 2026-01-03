@@ -208,6 +208,64 @@ For each task completion:
 |------|----------|---------|----------|------------|----------|
 | [Risk] | [Yes/No] | [Low/Med/High] | [Strategy] | [Resolved/Ongoing] |
 
+## Agent-Specific Guidance & Smart Workflow Integration
+
+### For Claude (Narrative Reasoning Agent)
+**Strengths**: Complex dependency analysis, stakeholder impact assessment, comprehensive planning
+**Best for**: Task breakdown, dependency mapping, risk assessment
+**Workflow optimization**:
+- Analyze task interdependencies and stakeholder impacts
+- Consider broader context and long-term implications
+- Flag tasks that affect multiple stakeholders or systems
+- Provide comprehensive rationale for task sequencing
+
+### For Cursor (IDE Integration Agent)
+**Strengths**: Code-level task estimation, technical dependency analysis, implementation validation
+**Best for**: Technical task breakdown, code complexity assessment, implementation planning
+**Workflow optimization**:
+- Provide accurate time estimates based on code complexity
+- Identify technical dependencies and integration points
+- Validate tasks against existing codebase patterns
+- Focus on maintainable, testable implementation approaches
+
+### For Copilot (Code Generation Agent)
+**Strengths**: Rapid task prototyping, pattern matching, boilerplate generation
+**Best for**: Task validation, example generation, complexity assessment
+**Workflow optimization**:
+- Generate concrete examples for complex tasks
+- Validate task feasibility with working prototypes
+- Identify reusable patterns and boilerplate opportunities
+- Provide multiple implementation approaches with trade-offs
+
+### For Gemini (Multi-modal Agent)
+**Strengths**: Broad task analysis, creative problem solving, comprehensive validation
+**Best for**: Task validation, edge case identification, alternative approaches
+**Workflow optimization**:
+- Consider multiple implementation strategies
+- Identify edge cases and error conditions
+- Validate tasks against diverse scenarios
+- Synthesize information from multiple technical domains
+
+### Smart Workflow Integration
+
+#### Automated Task Management
+- **Dependency validation**: Check for circular dependencies and missing prerequisites
+- **Complexity assessment**: Adjust estimates based on historical patterns
+- **Parallel optimization**: Identify tasks that can safely run concurrently
+- **Risk-based prioritization**: Flag high-risk tasks for early attention
+
+#### Intelligent Task Suggestions
+- **Pattern recognition**: Suggest similar tasks based on historical completion
+- **Complexity warnings**: Alert when task complexity doesn't match estimates
+- **Dependency optimization**: Recommend task reordering for better flow
+- **Resource balancing**: Suggest task assignments based on team capacity
+
+#### Progress Intelligence
+- **Confidence trend analysis**: Track confidence evolution across task execution
+- **Blocker pattern detection**: Identify recurring issues and systemic problems
+- **Velocity optimization**: Learn from past performance to improve future estimates
+- **Quality gate enforcement**: Ensure tasks meet acceptance criteria before completion
+
 ## Key Rules
 - **Task = 1-4 hours of work max**
 - **One responsibility per task**
@@ -216,3 +274,6 @@ For each task completion:
 - **Identify research/spike tasks separately**
 - **Mark parallel-ready tasks [P]**
 - **Track confidence evolution** for pattern identification
+- **Agent-optimized**: Leverage your AI assistant's specific strengths
+- **Risk-aware**: Address high-complexity tasks early
+- **Quality-focused**: Ensure tasks deliver measurable value

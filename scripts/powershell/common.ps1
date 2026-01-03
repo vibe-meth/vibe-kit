@@ -1,16 +1,31 @@
 # Common functions for VibeCoder scripts
+# Set execution policy to allow script execution
+try {
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+} catch {
+    # Ignore policy changes if not admin
+}
 
 function Get-RepoRoot {
-    # Try git first
-    if ((git rev-parse --show-toplevel 2>$null)) {
-        git rev-parse --show-toplevel
-        return
+    # Try git first with error handling
+    try {
+        $gitResult = git rev-parse --show-toplevel 2>$null
+        if ($LASTEXITCODE -eq 0) {
+            return $gitResult.Trim()
+        }
+    } catch {
+        # Git command failed
     }
     
     # Fall back to script location
-    $scriptDir = Split-Path -Parent $PSCommandPath
-    $repoRoot = (Get-Item "$scriptDir/../../..").FullName
-    return $repoRoot
+    try {
+        $scriptDir = Split-Path -Parent $PSCommandPath -ErrorAction Stop
+        $repoRoot = (Get-Item "$scriptDir/../../..").FullName
+        return $repoRoot
+    } catch {
+        Write-Error "Cannot determine repository root"
+        exit 1
+    }
 }
 
 function Get-CurrentBranch {
@@ -19,9 +34,14 @@ function Get-CurrentBranch {
         return $env:VIBE_FEATURE
     }
     
-    # Try git
-    if ((git rev-parse --abbrev-ref HEAD 2>$null)) {
-        return git rev-parse --abbrev-ref HEAD
+    # Try git with error handling
+    try {
+        $gitResult = git rev-parse --abbrev-ref HEAD 2>$null
+        if ($LASTEXITCODE -eq 0) {
+            return $gitResult.Trim()
+        }
+    } catch {
+        # Git command failed
     }
     
     # Default fallback
@@ -29,8 +49,12 @@ function Get-CurrentBranch {
 }
 
 function Get-HasGit {
-    $result = git rev-parse --show-toplevel 2>$null
-    return [bool]$result
+    try {
+        $gitResult = git rev-parse --show-toplevel 2>$null
+        return [bool]($LASTEXITCODE -eq 0 -and $gitResult)
+    } catch {
+        return $false
+    }
 }
 
 function Get-TaskDir {

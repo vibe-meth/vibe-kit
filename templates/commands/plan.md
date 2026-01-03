@@ -56,15 +56,67 @@ For each phase:
 - **Unknowns**: NEEDS CLARIFICATION items
 - **Constraints**: Time, scope, performance, security
 
-### 4. Execution Flow
-- **Execution order**: Phases happen sequentially or in parallel?
-- **Blockers**: What could stop us?
-- **Pivots**: When do we reassess?
+### 4. Execution Flow & Dependencies
 
-### 5. Confidence Assessment
-- **High confidence (8-10)**: We know how to do this
-- **Medium confidence (5-7)**: We have a direction, need validation
-- **Low confidence (1-4)**: We need more research
+#### Phase Sequencing Logic
+```mermaid
+graph TD
+    A[Phase 1: Foundation] --> B{Has Dependencies?}
+    B -->|Yes| C[Phase 2: Integration]
+    B -->|No| D[Phase 2: Core Features]
+    C --> E[Phase 3: Polish]
+    D --> E
+    E --> F[Phase 4: Launch]
+```
+
+#### Parallel Execution Rules
+- **Parallel phases** have no shared dependencies or resources
+- **Sequential phases** require output from previous phase
+- **Integration checkpoints** defined at phase boundaries
+
+#### Blocker Response Protocol
+1. **Critical blockers** (< 2 hours): Stop all work, escalate immediately
+2. **High blockers** (2-4 hours): Pause current phase, work on alternative
+3. **Medium blockers** (4-8 hours): Document and continue with mitigation
+4. **Low blockers** (> 8 hours): Queue for resolution, track impact
+
+#### Pivot Triggers
+- **Confidence drops below 5** in any phase
+- **Major assumption invalidated** (proven wrong)
+- **External dependency change** (API deprecated, tool unavailable)
+- **Timeline compression** required (stakeholder request)
+
+### 5. Confidence Assessment Framework
+
+#### Confidence Scoring Methodology
+Score based on **reproducibility** and **expertise level**:
+
+- **10**: **Exact replication** - We've built this exact thing before, using same tech stack
+- **9**: **Strong familiarity** - Same domain, similar patterns, documented approaches
+- **8**: **Competent execution** - Similar patterns exist, minor adaptations needed
+- **7**: **Sound approach** - Documented methodology exists, needs validation
+- **6**: **Directionally correct** - We know the approach, uncertain on implementation details
+- **5**: **Exploratory phase** - We have a working hypothesis, needs testing/research
+- **4**: **Research required** - We understand goals, significant unknowns remain
+- **3**: **Experimental approach** - High uncertainty, multiple viable paths exist
+- **2**: **Speculative planning** - Goals are clear, path is highly uncertain  
+- **1**: **Conceptual exploration** - Even the approach needs definition
+
+#### Risk Assessment Matrix
+For each phase, assess:
+
+| Risk Type | Likelihood | Impact | Mitigation Strategy |
+|------------|-------------|---------|-------------------|
+| **Technical** | High/Med/Low | Critical/Med/High | [Specific action] |
+| **Timeline** | High/Med/Low | Critical/Med/High | [Buffer/Alternative] |
+| **Resource** | High/Med/Low | Critical/Med/High | [Cross-train/Outsource] |
+| **Dependency** | High/Med/Low | Critical/Med/High | [Fallback/Parallel] |
+
+#### Confidence Triggers
+**Stop and clarify when confidence drops:**
+- More than 3 points between initial score and current assessment
+- Score below 5 for any phase
+- Multiple assumptions marked as "NEEDS CLARIFICATION"
 
 ## Phase Template
 
@@ -82,17 +134,74 @@ For each phase:
 - [Main work]
 - [Main work]
 
+### Context Preservation System
+
+#### Phase Transition Checklist
+When moving between phases, ensure:
+- [ ] **Previous phase validated**: All acceptance criteria met
+- [ ] **Key decisions documented**: Rationale recorded for major choices
+- [ ] **Assumptions updated**: Invalidated assumptions removed/updated
+- [ ] **Context synced**: Agent tools updated with latest plan state
+
+#### Confidence Tracking
+Record confidence evolution for each phase:
+```markdown
+### Phase Confidence Timeline
+| Phase | Initial | Mid-Phase | Final | Trend | Notes |
+|-------|---------|----------|-------|-------|--------|
+| [Phase] | [Score]/10 | [Score]/10 | [Score]/10 | [↑/↓/→] | [Key changes] |
+```
+
+#### Decision Audit Trail
+Maintain record of:
+- **Major choices** with alternatives considered
+- **Assumption validations** with outcomes  
+- **Pivot decisions** with reasons and impact assessment
+
+#### Risk Register
+| Risk | Likelihood | Impact | Mitigation | Status |
+|------|-----------|---------|----------|------------|----------|
+| [Risk] | [Low/Med/High] | [Low/Med/High] | [Strategy] | [Active/Mitigated] |
+
 ### Key Decisions
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| [What] | [Decision] | [Why] |
+| Decision | Choice | Rationale | Risk Level |
+|----------|--------|-----------|------------|
+| [What] | [Decision] | [Why] | [Low/Med/High] |
 
-### Assumptions
-- [Assumption #1 — Risk if wrong]
-- [Assumption #2 — Risk if wrong]
+### Assumption Validation
+| Assumption | Validation Method | Risk if Wrong | Status |
+|------------|-------------------|---------------|---------|
+| [Assumption] | [How to test] | [Impact] | [Validated/Needs Test] |
 
-### Success Signal
-- [How do we know this is done?]
+### Critical Assumptions
+| # | Assumption | Risk if Wrong | Validation Plan | Owner |
+|---|------------|---------------|---------------|--------|
+| 1 | [Specific assumption] | [Critical/High/Med/Low impact] | [How/when to validate] | [Who validates] |
+| 2 | [Specific assumption] | [Critical/High/Med/Low impact] | [How/When to validate] | [Who validates] |
+
+### Risk Mitigation Checklist
+- [ ] **Technical risks documented and mitigation planned**
+- [ ] **Timeline risks identified with buffer strategies** 
+- [ ] **Resource risks assessed and backup plans ready**
+- [ ] **External dependencies validated and fallbacks defined**
+
+### Success Signal Framework
+**Definition of "Done" for each phase**:
+- **Functional complete**: All outlined work items delivered
+- **Quality achieved**: Acceptance criteria met and validated
+- **Dependencies resolved**: No blocking issues remaining
+- **Confidence threshold**: Average confidence ≥ 7 across all tasks in phase
+
+**Phase Completion Validation**:
+1. **Functional review**: Test all deliverables against acceptance criteria
+2. **Integration testing**: Verify components work together as specified
+3. **Performance validation**: Confirm non-functional requirements met (speed, security, usability)
+4. **Documentation**: Update decisions, assumptions, and lessons learned
+
+**Confidence-based progression rules**:
+- **8+ average confidence**: Proceed to next phase
+- **5-7 average confidence**: Address issues before proceeding
+- **<5 average confidence**: Replan phase or conduct additional research
 - [What validation do we need?]
 
 ### Confidence: [X/10]

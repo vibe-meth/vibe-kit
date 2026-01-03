@@ -42,7 +42,29 @@ Update `tasks.md` with:
 - **Notes**: [Key decisions, learnings, changes from plan]
 ```
 
+### Context-Aware Confidence System
+
+#### Multi-Task Confidence Tracking
+```markdown
+### Phase Confidence Summary
+| Phase | Task Count | Average Confidence | Risk Level | Status |
+|-------|------------|-------------------|------------|--------|
+| [Phase] | [Number] | [Score/10] | [Low/Med/High] | [Green/Yellow/Red] |
+```
+
+#### Confidence Adjustment Rules
+When completing tasks, adjust confidence based on:
+- **Task complexity vs. estimated**: If actual > estimate, reduce future estimates for similar tasks
+- **Unknown discovery**: If multiple unknowns encountered, increase uncertainty for related tasks
+- **External dependencies**: If third-party issues arise, adjust confidence for integration tasks
+
 ### Confidence Scoring Guide
+- **10**: Done this exact thing before, patterns well-understood
+- **8-9**: Similar patterns, familiar tech stack, minor adaptations
+- **5-7**: Good approach, some validation needed
+- **1-4**: High uncertainty, needs rework or validation
+
+**When confidence drops more than 3 points** from initial assessment, **PAUSE** and reassess approach.
 
 - **8-10**: We're confident this is right and works
 - **5-7**: Mostly confident, some unknowns or refinement needed

@@ -41,52 +41,178 @@ For each plan phase, generate tasks:
 - **Estimate**: XS (< 1 hour), S (1-2h), M (2-4h), L (4+ hours)
 - **Priority**: High / Medium / Low
 
-### 3. Dependency Graph
-```
-SETUP-1 → CORE-1
-SETUP-1 → CORE-2
-CORE-1 → CORE-3 [PARALLEL with CORE-2]
-CORE-2 → CORE-3
-CORE-3 → POLISH-1
+#### Task Complexity Factors
+Add uncertainty multipliers based on:
+- **Domain familiarity**: Done this before? (×0.5) vs new domain? (×2)
+- **Technical uncertainty**: Known patterns? (×1) vs experimental? (×3)
+- **Integration complexity**: Simple API? (×1) vs multiple systems? (×2)
+- **Documentation quality**: Good examples exist? (×1) vs reverse engineering? (×2)
+
+#### Enhanced Estimation Formula
+**Base estimate** × **Complexity multiplier** = **Adjusted estimate**
+- **XS**: 0.5-1h × complexity = actual
+- **S**: 1-2h × complexity = actual  
+- **M**: 2-4h × complexity = actual
+- **L**: 4h+ × complexity = actual
+
+#### Dependency Visualization
+```mermaid
+graph TD
+    SETUP-1 --> CORE-1
+    SETUP-1 --> CORE-2
+    CORE-1 --> CORE-3
+    CORE-2 --> CORE-3
+    CORE-1 --> INTEGRATION-1
+    CORE-2 --> CORE-3
+    CORE-3 --> POLISH-1
 ```
 
-### 4. Execution Queue
-Ordered list of tasks with parallel markers:
+#### Parallel Execution Rules
+- **[P] marker** = No shared dependencies with other P tasks
+- **Resource conflicts** = Mark tasks that modify same files/database
+- **Integration points** = Explicitly mark where parallel streams merge
+
+### 3. Dependency Analysis
+#### Critical Path Identification
+- **Critical path** = Longest dependency chain
+- **Parallel streams** = Independent task groups
+- **Integration points** = Where parallel work merges
+
+#### Risk Assessment for Each Task
+| Task | Technical Risk | Timeline Risk | Resource Risk | Overall Risk | Mitigation |
+|------|---------------|--------------|--------------|-------------|------------|
+| [TASK] | [Low/Med/High] | [Low/Med/High] | [Low/Med/High] | [Score] | [Strategy] |
+
+#### Dependency Graph Formats
+
+**Text Format** (for quick reference):
+```
+SETUP-1 → CORE-1
+CORE-1 → {CORE-2, INTEGRATION-1} [PARALLEL]
+CORE-2 → CORE-3
+{CORE-2, INTEGRATION-1} → POLISH-1
+```
+
+**Mermaid Format** (for visualization):
+```mermaid
+graph TD
+    SETUP-1 --> CORE-1
+    SETUP-1 --> CORE-2
+    CORE-1 --> CORE-3
+    CORE-2 --> CORE-3
+    CORE-1 --> INTEGRATION-1
+    CORE-2 --> CORE-3
+    CORE-3 --> POLISH-1
+    CORE-2 --> INTEGRATION-1
+```
+
+#### Bottleneck Identification
+- **Single resource contention** = Multiple tasks need same person/tool
+- **Sequential dependencies** = Tasks waiting on critical path
+- **Unknown blockers** = Tasks with high uncertainty requiring research
+
+### 4. Execution Strategy
+
+#### Execution Queue & Tracking
 ```
 1. SETUP-1 — Initialize project
-2. CORE-1 [P] — Implement data model
-   CORE-2 [P] — Setup database
-   (Can run in parallel)
+2. [PARALLEL GROUP] 
+   - CORE-1 [P] — Implement data model
+   - CORE-2 [P] — Setup database
 3. CORE-3 — API endpoints (depends on CORE-1, CORE-2)
 4. POLISH-1 — Testing & validation
 ```
 
-## Task Template
+#### Real-time Status Tracking
+For each task execution:
+- **Start time**: When work begins
+- **Confidence entry**: Initial assessment (1-10)
+- **Progress updates**: Major milestones reached
+- **Blocker log**: Issues encountered and resolution
+- **End time**: When task completes
+- **Final confidence**: Assessment of actual vs. estimated
+
+#### Task Status Markers
+- `[ ]` = Not started
+- `[→]` = In progress (current task)
+- `[✓]` = Done (current phase)
+- `[⚠]` = Blocked with active issue
+- `[🔄]` = Waiting for dependency/unblocked
+
+### 5. Enhanced Task Template
 
 ```markdown
 ### [PHASE]-[#]: [Title]
 
 **Description**: [2-3 sentences on what we're doing]
 
-**Acceptance Criteria**:
-- [ ] [Measurable outcome]
-- [ ] [Measurable outcome]
-- [ ] [Measurable outcome]
+**Success Criteria** (measurable & unambiguous):
+- [ ] **Functional**: [Specific outcome delivered]
+- [ ] **Quality**: [Performance/standard met] 
+- [ ] **Integration**: [Works with existing systems]
 
-**Depends on**: [TASK-ID] or None
+**Dependencies**: 
+- **Blocks**: [TASK-ID] (must complete first)
+- **Enables**: [TASK-ID] (prerequisites for others)
 
-**Estimate**: [XS / S / M / L]
+**Estimate**: [XS / S / M / L] 
+- **Confidence**: [1-10] + [Rationale]
 
-**Unknowns**:
-- [What might surprise us]
-- [What needs validation]
+**Complexity Factors**:
+- [ ] **Domain familiarity**: [Known/Partial/New]
+- [ ] **Technical uncertainty**: [Low/Med/High]
+- [ ] **Integration complexity**: [Simple/Moderate/Complex]
+
+**Validation Method**:
+- [ ] **How we verify**: [Test approach]
+- [ ] **Rollback criteria**: [When to revert]
+
+**Risk Assessment**:
+- [ ] **Known risks**: [Potential issues]
+- [ ] **Mitigation plan**: [How to address]
+- [ ] **Confidence impact**: [How uncertainty affects timeline]
+
+**Definition of Done**:
+- [ ] **Functional complete**: [All requirements met]
+- [ ] **Quality gates passed**: [Tests pass, performance ok]
+- [ ] **Documentation updated**: [Changes recorded]
 ```
 
-## Key Rules
+### 6. Context Preservation System
 
+#### Task-to-Phase Mapping
+Every task must map to a specific phase from `plan.md`:
+```markdown
+| Task | Target Phase | Completion Enables |
+|-------|--------------|-------------------|
+| [TASK] | [Phase name] | [Next phase trigger] |
+```
+
+#### Cross-Task Dependencies
+Track how tasks affect each other:
+- **Shared resources**: Tasks needing same person/tool
+- **Data dependencies**: Tasks modifying same database/files
+- **Sequential blockers**: Tasks that must complete before others start
+
+#### Confidence Evolution Tracking
+For each task completion:
+```markdown
+### Task Confidence Log
+| Task | Initial | Final | Delta | Key Learnings |
+|------|----------|--------|-------|--------------|--------------|
+| [TASK] | [Score]/10 | [Score]/10 | [Change] | [What changed] |
+```
+
+#### Risk Monitoring
+| Risk | Detected | Impact | Mitigation | Status |
+|------|----------|---------|----------|------------|----------|
+| [Risk] | [Yes/No] | [Low/Med/High] | [Strategy] | [Resolved/Ongoing] |
+
+## Key Rules
 - **Task = 1-4 hours of work max**
 - **One responsibility per task**
 - **Clear acceptance criteria**
 - **Document all dependencies**
 - **Identify research/spike tasks separately**
 - **Mark parallel-ready tasks [P]**
+- **Track confidence evolution** for pattern identification
